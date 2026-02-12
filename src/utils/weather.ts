@@ -270,6 +270,24 @@ export function getTempColor(temp: number, unit: 'celsius' | 'fahrenheit'): stri
   return 'text-red-400';
 }
 
+// Returns a CSS linear-gradient string based on temperature.
+export function getTempGradient(temp: number, unit: 'celsius' | 'fahrenheit'): string {
+  const c = unit === 'fahrenheit' ? (temp - 32) * (5 / 9) : temp;
+  // Clamp to sensible range -10..40
+  const min = -10;
+  const max = 40;
+  const t = Math.max(min, Math.min(max, c));
+  // Map to hue: cold ~220 (blue) -> hot ~10 (red)
+  const coldHue = 220;
+  const hotHue = 10;
+  const ratio = (t - min) / (max - min);
+  const hue = Math.round(coldHue + (hotHue - coldHue) * ratio);
+  // two stops with slightly different lightness for depth
+  const stop1 = `hsla(${hue}, 75%, ${60 - ratio * 10}%, 0.14)`;
+  const stop2 = `hsla(${hue}, 75%, ${45 - ratio * 6}%, 0.06)`;
+  return `linear-gradient(90deg, ${stop1}, ${stop2})`;
+}
+
 // Format date helpers
 export function formatDay(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
