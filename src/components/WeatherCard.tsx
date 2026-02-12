@@ -11,6 +11,7 @@ interface WeatherCardProps {
   isError: boolean;
   onSelectDay: (location: SavedLocation, forecast: DailyForecast) => void;
   onSearchHolidays: (location: SavedLocation) => void;
+  onSearchPackages: (location: SavedLocation) => void;
   score?: number | null;            // weather score (shown when sorting)
 }
 
@@ -21,6 +22,7 @@ export default function WeatherCard({
   isError,
   onSelectDay,
   onSearchHolidays,
+  onSearchPackages,
   score,
 }: WeatherCardProps) {
   const windUnit = temperatureUnit === 'celsius' ? 'km/h' : 'mph';
@@ -116,16 +118,28 @@ export default function WeatherCard({
         </div>
 
         {/* Search Holidays */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onSearchHolidays(location);
-          }}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500/15 py-2.5 text-sm font-semibold text-sky-400 transition-colors hover:bg-sky-500/25 active:scale-[0.98]"
-        >
-          <Plane className="h-4 w-4" />
-          Search Google Flights
-        </button>
+        <div className="mt-3 grid grid-cols-1 gap-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSearchHolidays(location);
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500/15 py-2.5 text-sm font-semibold text-sky-400 transition-colors hover:bg-sky-500/25 active:scale-[0.98]"
+          >
+            <Plane className="h-4 w-4" />
+            Search Google Flights
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSearchPackages(location);
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500/15 py-2.5 text-sm font-semibold text-indigo-300 transition-colors hover:bg-indigo-500/25 active:scale-[0.98]"
+          >
+            <Plane className="h-4 w-4" />
+            Search Expedia Hotels + Flights
+          </button>
+        </div>
       </div>
     );
   }
@@ -198,16 +212,28 @@ export default function WeatherCard({
 
       {/* Search Holidays */}
       <div className="border-t border-slate-800 px-4 py-3">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onSearchHolidays(location);
-          }}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500/15 py-2.5 text-sm font-semibold text-sky-400 transition-colors hover:bg-sky-500/25 active:scale-[0.98]"
-        >
-          <Plane className="h-4 w-4" />
-          Search Google Flights
-        </button>
+        <div className="grid grid-cols-1 gap-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSearchHolidays(location);
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-500/15 py-2.5 text-sm font-semibold text-sky-400 transition-colors hover:bg-sky-500/25 active:scale-[0.98]"
+          >
+            <Plane className="h-4 w-4" />
+            Search Google Flights
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSearchPackages(location);
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500/15 py-2.5 text-sm font-semibold text-indigo-300 transition-colors hover:bg-indigo-500/25 active:scale-[0.98]"
+          >
+            <Plane className="h-4 w-4" />
+            Search Expedia Hotels + Flights
+          </button>
+        </div>
       </div>
     </div>
   );

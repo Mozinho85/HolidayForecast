@@ -5,7 +5,7 @@ import { MapPin, RefreshCw, Thermometer, ArrowUpDown } from 'lucide-react';
 import { useSavedLocations } from '../context/SavedLocationsContext';
 import { getWeatherForecast } from '../api/openMeteo';
 import { averageScore } from '../utils/weatherScore';
-import { buildHolidaySearchUrl } from '../utils/holidaySearch';
+import { buildExpediaPackageSearchUrl, buildHolidaySearchUrl } from '../utils/holidaySearch';
 import DateStrip from '../components/DateStrip';
 import WeatherCard from '../components/WeatherCard';
 import DetailSheet from '../components/DetailSheet';
@@ -39,6 +39,22 @@ export default function ForecastPage() {
     (location: SavedLocation) => {
       if (selectedDates.length === 0) return;
       const url = buildHolidaySearchUrl(location.name, selectedDates, preferredAirport);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    },
+    [selectedDates, preferredAirport]
+  );
+
+  // Open Expedia packages for a location using the currently selected dates
+  const handleSearchPackages = useCallback(
+    (location: SavedLocation) => {
+      if (selectedDates.length === 0) return;
+      const url = buildExpediaPackageSearchUrl(
+        location.name,
+        selectedDates,
+        preferredAirport,
+        location.admin1,
+        location.country
+      );
       window.open(url, '_blank', 'noopener,noreferrer');
     },
     [selectedDates, preferredAirport]
@@ -196,6 +212,7 @@ export default function ForecastPage() {
                   isError={query.isError}
                   onSelectDay={handleSelectDay}
                   onSearchHolidays={handleSearchHolidays}
+                  onSearchPackages={handleSearchPackages}
                   score={isSorted ? score : null}
                 />
               );
