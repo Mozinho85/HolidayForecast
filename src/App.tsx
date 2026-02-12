@@ -9,7 +9,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[var(--color-primary-900)]">
+    <div className="flex min-h-dvh flex-col bg-gradient-to-b from-[#00b1ff] to-[#007dff]">
       {/* Main content */}
       <main className="flex-1 overflow-y-auto pb-20">
         <Routes>
