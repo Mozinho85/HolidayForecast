@@ -287,6 +287,20 @@ export function getTempGradient(temp: number, unit: 'celsius' | 'fahrenheit'): s
   return `linear-gradient(90deg, ${stop1}, ${stop2})`;
 }
 
+// Returns a pale blue background color (hsla) tuned by temperature for subtle variation.
+export function getTempPaleBackground(temp: number, unit: 'celsius' | 'fahrenheit'): string {
+  const c = unit === 'fahrenheit' ? (temp - 32) * (5 / 9) : temp;
+  const min = -10;
+  const max = 40;
+  const t = Math.max(min, Math.min(max, c));
+  const ratio = (t - min) / (max - min); // 0..1
+  const hue = 210; // blue
+  // lightness: colder -> lighter (90%) ; hotter -> slightly darker (78%)
+  const lightness = 90 - ratio * 12;
+  const alpha = 0.12;
+  return `hsla(${hue}, 70%, ${lightness}%, ${alpha})`;
+}
+
 // Format date helpers
 export function formatDay(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
