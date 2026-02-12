@@ -273,18 +273,17 @@ export function getTempColor(temp: number, unit: 'celsius' | 'fahrenheit'): stri
 // Returns a CSS linear-gradient string based on temperature.
 export function getTempGradient(temp: number, unit: 'celsius' | 'fahrenheit'): string {
   const c = unit === 'fahrenheit' ? (temp - 32) * (5 / 9) : temp;
-  // Clamp to sensible range -10..40
   const min = -10;
   const max = 40;
   const t = Math.max(min, Math.min(max, c));
-  // Map to hue: cold ~220 (blue) -> hot ~10 (red)
-  const coldHue = 220;
-  const hotHue = 10;
-  const ratio = (t - min) / (max - min);
-  const hue = Math.round(coldHue + (hotHue - coldHue) * ratio);
-  // two stops with slightly different lightness for depth
-  const stop1 = `hsla(${hue}, 75%, ${60 - ratio * 10}%, 0.14)`;
-  const stop2 = `hsla(${hue}, 75%, ${45 - ratio * 6}%, 0.06)`;
+  const ratio = (t - min) / (max - min); // 0..1
+  // Produce a lighter blue gradient across all temps: keep hue in blue range
+  const baseHue = 210; // blue
+  // Lightness values: colder -> slightly lighter, hotter -> slightly darker but still blue
+  const light1 = 72 - ratio * 12; // 72% -> 60%
+  const light2 = 64 - ratio * 8; // 64% -> 56%
+  const stop1 = `hsla(${baseHue}, 70%, ${light1}%, 0.16)`;
+  const stop2 = `hsla(${baseHue}, 70%, ${light2}%, 0.06)`;
   return `linear-gradient(90deg, ${stop1}, ${stop2})`;
 }
 
