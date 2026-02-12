@@ -9,7 +9,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div className="flex min-h-dvh flex-col bg-slate-950">
+    <div className="flex min-h-dvh flex-col bg-[var(--color-primary-900)]">
       {/* Main content */}
       <main className="flex-1 overflow-y-auto pb-20">
         <Routes>
@@ -20,7 +20,7 @@ function App() {
       </main>
 
       {/* Bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-800 bg-slate-950/95 backdrop-blur-lg safe-bottom">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-800 bg-[var(--color-primary-900)]/95 backdrop-blur-lg safe-bottom">
         <div className="mx-auto flex max-w-lg">
           <NavLink
             to="/"
