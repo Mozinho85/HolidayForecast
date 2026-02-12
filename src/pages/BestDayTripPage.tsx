@@ -104,9 +104,7 @@ export default function BestDayTripPage() {
                     ? 'border-amber-400/80 shadow-lg shadow-amber-400/10'
                     : 'border-slate-800'
                 }`}
-              
-              >
-              >
+                >
                 <span className="w-16 text-xs text-slate-400 font-semibold">
                   {formatDay(entry.date)}<br />
                   <span className="text-[11px] text-slate-500">{formatDate(entry.date)}</span>

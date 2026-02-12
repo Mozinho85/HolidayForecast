@@ -28,25 +28,6 @@ export default function ForecastPage() {
     forecast: DailyForecast;
   } | null>(null);
 
-  // If navigated here with state to open a detail, open it
-  useEffect(() => {
-    const s: any = location.state;
-    if (s && s.openDetail) {
-      const { locId, date } = s.openDetail as { locId: number; date: string };
-      const idx = locations.findIndex((l) => l.id === locId);
-      if (idx !== -1) {
-        const forecasts = weatherQueries[idx]?.data as DailyForecast[] | undefined;
-        const forecast = forecasts?.find((f) => f.date === date) as DailyForecast | undefined;
-        if (forecast) {
-          setDetailTarget({ location: locations[idx], forecast });
-        }
-      }
-      // clear the navigation state so it doesn't reopen
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.state, locations, weatherQueries]);
-
   const handleSelectDay = useCallback(
     (location: SavedLocation, forecast: DailyForecast) => {
       setDetailTarget({ location, forecast });
@@ -94,6 +75,25 @@ export default function ForecastPage() {
 
   const isLoading = weatherQueries.some((q) => q.isLoading);
   const isRefetching = weatherQueries.some((q) => q.isRefetching);
+
+  // If navigated here with state to open a detail, open it
+  useEffect(() => {
+    const s: any = location.state;
+    if (s && s.openDetail) {
+      const { locId, date } = s.openDetail as { locId: number; date: string };
+      const idx = locations.findIndex((l) => l.id === locId);
+      if (idx !== -1) {
+        const forecasts = weatherQueries[idx]?.data as DailyForecast[] | undefined;
+        const forecast = forecasts?.find((f) => f.date === date) as DailyForecast | undefined;
+        if (forecast) {
+          setDetailTarget({ location: locations[idx], forecast });
+        }
+      }
+      // clear the navigation state so it doesn't reopen
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state, locations, weatherQueries]);
 
   // Generate 16 days starting from today
   const next16Days = useMemo(() => {
