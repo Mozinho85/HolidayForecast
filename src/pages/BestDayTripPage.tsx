@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { getWeatherForecast } from '../api/openMeteo';
 import { scoreForecast, scoreColor } from '../utils/weatherScore';
-import { getWeatherInfo, countryFlag, formatDay, formatDate, getTempPaleBackground } from '../utils/weather';
+import { getWeatherInfo, countryFlag, formatDay, formatDate, getTempMappedBackground } from '../utils/weather';
 import { buildHolidaySearchUrl } from '../utils/holidaySearch';
 import type { SavedLocation, DailyForecast } from '../types';
 
@@ -104,7 +104,7 @@ export default function BestDayTripPage() {
                     ? 'border-amber-400/80 shadow-lg shadow-amber-400/10'
                     : 'border-slate-800'
                 }`}
-                style={{ backgroundColor: getTempPaleBackground((entry.forecast.tempMax + entry.forecast.tempMin) / 2, temperatureUnit) }}
+                style={{ backgroundColor: getTempMappedBackground((entry.forecast.tempMax + entry.forecast.tempMin) / 2, temperatureUnit) }}
                 >
                 <span className="w-16 text-xs text-slate-400 font-semibold">
                   {formatDay(entry.date)}<br />

@@ -301,6 +301,51 @@ export function getTempPaleBackground(temp: number, unit: 'celsius' | 'fahrenhei
   return `hsla(${hue}, 70%, ${lightness}%, ${alpha})`;
 }
 
+// Map temperature to a color using defined stops and interpolate between them.
+export function getTempMappedBackground(temp: number, unit: 'celsius' | 'fahrenheit'): string {
+  const c = unit === 'fahrenheit' ? (temp - 32) * (5 / 9) : temp;
+  // Stops defined in Celsius
+  const stops = [
+    { t: 0, rgba: [255, 255, 255, 1] }, // white at 0C
+    { t: 5, rgba: [59, 130, 246, 1] }, // blue at 5C (#3b82f6)
+    { t: 15, rgba: [59, 130, 246, 0] }, // transparent at 15C (same hue but alpha 0)
+    { t: 22, rgba: [251, 146, 60, 1] }, // orange at 22C (#fb923c)
+    { t: 25, rgba: [239, 68, 68, 1] }, // red at 25C (#ef4444)
+  ];
+
+  // Clamp
+  if (c <= stops[0].t) {
+    const s = stops[0].rgba;
+    return `rgba(${s[0]}, ${s[1]}, ${s[2]}, ${0.12 * s[3]})`;
+  }
+  if (c >= stops[stops.length - 1].t) {
+    const s = stops[stops.length - 1].rgba;
+    return `rgba(${s[0]}, ${s[1]}, ${s[2]}, ${0.12 * s[3]})`;
+  }
+
+  // Find surrounding stops
+  let lower = stops[0];
+  let upper = stops[stops.length - 1];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (c >= stops[i].t && c <= stops[i + 1].t) {
+      lower = stops[i];
+      upper = stops[i + 1];
+      break;
+    }
+  }
+
+  const span = upper.t - lower.t;
+  const ratio = span === 0 ? 0 : (c - lower.t) / span;
+  const r = Math.round(lower.rgba[0] + (upper.rgba[0] - lower.rgba[0]) * ratio);
+  const g = Math.round(lower.rgba[1] + (upper.rgba[1] - lower.rgba[1]) * ratio);
+  const b = Math.round(lower.rgba[2] + (upper.rgba[2] - lower.rgba[2]) * ratio);
+  const a = lower.rgba[3] + (upper.rgba[3] - lower.rgba[3]) * ratio;
+
+  // Apply a mild overlay alpha so the color is subtle on dark background
+  const overlayAlpha = 0.12 * a;
+  return `rgba(${r}, ${g}, ${b}, ${overlayAlpha})`;
+}
+
 // Format date helpers
 export function formatDay(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
