@@ -10,11 +10,7 @@ export function buildHolidaySearchUrl(
   const ret =
     sorted.length > 1
       ? sorted[sorted.length - 1]
-      : (() => {
-          const d = new Date(sorted[0] + 'T00:00:00');
-          d.setDate(d.getDate() + 1);
-          return d.toISOString().split('T')[0];
-        })();
+      : sorted[0];
 
   const origin = preferredAirportIata?.trim() || 'UK';
   const query = `Flights from ${origin} to ${destination} departing ${depart} returning ${ret}`;
@@ -54,11 +50,7 @@ export function buildExpediaPackageSearchUrl(
   const ret =
     sorted.length > 1
       ? sorted[sorted.length - 1]
-      : (() => {
-          const d = new Date(sorted[0] + 'T00:00:00');
-          d.setDate(d.getDate() + 1);
-          return d.toISOString().split('T')[0];
-        })();
+      : sorted[0];
 
   const originIata = preferredAirportIata?.trim().toUpperCase();
   const origin = originIata ? `United Kingdom (${originIata})` : 'United Kingdom';
