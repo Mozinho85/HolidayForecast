@@ -99,39 +99,41 @@ export default function BestDayTripPage() {
                   setSelectedDates([entry.date]);
                   navigate('/', { state: { openDetail: { locId: entry.loc.id, date: entry.date } } });
                 }}
-                className={`flex items-center gap-3 rounded-xl border p-3 ${
+                className={`flex items-center gap-3 rounded-xl border p-3 shadow-sm backdrop-blur-md ${
                   top5.includes(entry.date)
-                    ? 'border-amber-400/80 shadow-lg shadow-amber-400/10'
-                    : 'border-slate-800'
+                    ? 'border-white/40 shadow-lg'
+                    : 'border-white/10'
                 }`}
                 style={{ backgroundColor: getTempMappedBackground((entry.forecast.tempMax + entry.forecast.tempMin) / 2, temperatureUnit) }}
                 >
-                <span className="w-16 text-xs text-slate-400 font-semibold">
+                <div className="absolute inset-0 rounded-xl bg-slate-900/40 pointer-events-none" />
+                
+                <span className="relative z-10 w-16 text-xs text-slate-200 font-semibold drop-shadow-sm">
                   {formatDay(entry.date)}<br />
-                  <span className="text-[11px] text-slate-500">{formatDate(entry.date)}</span>
+                  <span className="text-[11px] text-slate-300">{formatDate(entry.date)}</span>
                 </span>
-                <span className="text-xl">{countryFlag(entry.loc.country_code)}</span>
-                <span className="ml-2">
+                <span className="relative z-10 text-xl drop-shadow-sm">{countryFlag(entry.loc.country_code)}</span>
+                <span className="relative z-10 ml-2">
                   {
                     (() => {
                       const info = getWeatherInfo(
                         entry.forecast.daytimeWeatherCode ?? entry.forecast.weatherCode
                       );
                       const Icon = info.icon;
-                      return <Icon className="h-6 w-6 text-slate-300" />;
+                      return <Icon className="h-6 w-6 text-white drop-shadow-sm" />;
                     })()
                   }
                 </span>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-white truncate">{entry.loc.name}</div>
-                  <div className="text-xs text-slate-400 truncate">{entry.loc.country}</div>
+                <div className="relative z-10 flex-1 min-w-0">
+                  <div className="font-semibold text-white truncate drop-shadow-sm">{entry.loc.name}</div>
+                  <div className="text-xs text-slate-200 truncate drop-shadow-sm">{entry.loc.country}</div>
                 </div>
-                <div className="flex flex-col items-end">
-                  <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${scoreColor(entry.score)}`}>{entry.score}</span>
-                  <span className="text-xs text-slate-400 mt-1">{getWeatherInfo(entry.forecast.daytimeWeatherCode ?? entry.forecast.weatherCode).label}</span>
-                  <span className="text-sm font-bold text-white mt-1">{entry.forecast.tempMax}°</span>
+                <div className="relative z-10 flex flex-col items-end">
+                  <span className={`rounded-full border border-white/20 bg-black/20 px-2 py-0.5 text-xs font-bold ${scoreColor(entry.score)} shadow-sm`}>{entry.score}</span>
+                  <span className="text-xs text-slate-200 mt-1 drop-shadow-sm">{getWeatherInfo(entry.forecast.daytimeWeatherCode ?? entry.forecast.weatherCode).label}</span>
+                  <span className="text-sm font-bold text-white mt-1 drop-shadow-sm">{entry.forecast.tempMax}°</span>
                   <button
-                    className="mt-2 flex items-center gap-1 rounded-lg border border-sky-400 bg-sky-500/10 px-2 py-1 text-xs font-semibold text-sky-400 hover:bg-sky-500/20"
+                    className="mt-2 flex items-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs font-semibold text-white hover:bg-white/20 shadow-sm backdrop-blur-sm"
                     onClick={(e) => {
                       // prevent parent navigation
                       e.stopPropagation();

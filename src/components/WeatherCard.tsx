@@ -43,8 +43,8 @@ export default function WeatherCard({
 
   if (forecasts.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
-        <p className="text-sm text-slate-400">
+      <div className="rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-md p-4">
+        <p className="text-sm text-slate-200">
           {countryFlag(location.country_code)} {location.name} — No forecast for selected dates
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function WeatherCard({
     return (
       <div
         onClick={() => onSelectDay(location, f)}
-        className={`cursor-pointer overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${info.gradient} bg-slate-900/80 p-4 transition-all hover:border-slate-700 active:scale-[0.98]`}
+        className={`cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br ${info.gradient} bg-slate-950/60 backdrop-blur-md p-4 transition-all hover:border-white/20 active:scale-[0.98]`}
       >
         {/* Location header */}
         <div className="mb-3 flex items-center justify-between">
@@ -68,7 +68,7 @@ export default function WeatherCard({
             <span className="text-lg">{countryFlag(location.country_code)}</span>
             <div>
               <h3 className="text-sm font-semibold text-white">{location.name}</h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-200">
                 {formatDay(f.date)} · {formatDate(f.date)}
               </p>
             </div>
@@ -83,35 +83,35 @@ export default function WeatherCard({
         {/* Main weather display */}
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-baseline gap-1">
-            <span className={`text-5xl font-bold ${getTempColor(f.tempMax, temperatureUnit)}`}>
+            <span className={`text-5xl font-bold ${getTempColor(f.tempMax, temperatureUnit)} drop-shadow-sm`}>
               {f.tempMax}°
             </span>
-            <span className="text-lg text-slate-400">
+            <span className="text-lg text-slate-300">
               / {f.tempMin}°
             </span>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <Icon className={`h-12 w-12 ${info.accentColor}`} strokeWidth={1.5} />
-            <span className="text-[10px] font-medium text-slate-400">
+            <Icon className={`h-12 w-12 ${info.accentColor} drop-shadow-sm`} strokeWidth={1.5} />
+            <span className="text-[10px] font-medium text-slate-300">
               {info.label}
             </span>
           </div>
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-3 gap-2 rounded-xl bg-slate-950/40 p-2.5">
+        <div className="grid grid-cols-3 gap-2 rounded-xl bg-black/20 p-2.5">
           <Stat
-            icon={<Droplets className="h-3.5 w-3.5 text-blue-400" />}
+            icon={<Droplets className="h-3.5 w-3.5 text-blue-300" />}
             label="Rain"
             value={`${f.precipitationProbability}%`}
           />
           <Stat
-            icon={<Wind className="h-3.5 w-3.5 text-teal-400" />}
+            icon={<Wind className="h-3.5 w-3.5 text-teal-300" />}
             label="Wind"
             value={`${f.windSpeedMax} ${windUnit}`}
           />
           <Stat
-            icon={<UVIcon className="h-3.5 w-3.5 text-amber-400" />}
+            icon={<UVIcon className="h-3.5 w-3.5 text-amber-300" />}
             label="UV"
             value={`${f.uvIndexMax}`}
           />
@@ -146,7 +146,7 @@ export default function WeatherCard({
 
   // Multi-date view (compact rows)
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 transition-all hover:border-slate-700">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-md transition-all hover:border-white/20">
       {/* Location header */}
       <div className="flex items-center gap-2 border-b border-slate-800 px-4 py-3">
         <span className="text-lg">{countryFlag(location.country_code)}</span>
@@ -251,8 +251,8 @@ function Stat({
   return (
     <div className="flex flex-col items-center gap-0.5">
       {icon}
-      <span className="text-[10px] text-slate-500">{label}</span>
-      <span className="text-xs font-semibold text-slate-300">{value}</span>
+      <span className="text-[10px] text-slate-300">{label}</span>
+      <span className="text-xs font-semibold text-white">{value}</span>
     </div>
   );
 }

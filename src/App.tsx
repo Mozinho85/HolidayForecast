@@ -20,15 +20,15 @@ function App() {
       </main>
 
       {/* Bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-800 bg-[var(--color-primary-900)]/95 backdrop-blur-lg safe-bottom">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-black/20 backdrop-blur-xl safe-bottom">
         <div className="mx-auto flex max-w-lg">
           <NavLink
             to="/"
             className={() =>
               `flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors ${
                 location.pathname === '/'
-                  ? 'text-primary-400'
-                  : 'text-slate-500 hover:text-slate-300'
+                  ? 'text-white drop-shadow-md'
+                  : 'text-white/60 hover:text-white/90'
               }`
             }
           >
@@ -40,8 +40,8 @@ function App() {
             className={() =>
               `flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors ${
                 location.pathname === '/best-day-trip'
-                  ? 'text-primary-400'
-                  : 'text-slate-500 hover:text-slate-300'
+                  ? 'text-white drop-shadow-md'
+                  : 'text-white/60 hover:text-white/90'
               }`
             }
           >
@@ -53,8 +53,8 @@ function App() {
             className={() =>
               `flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors ${
                 location.pathname === '/locations'
-                  ? 'text-primary-400'
-                  : 'text-slate-500 hover:text-slate-300'
+                  ? 'text-white drop-shadow-md'
+                  : 'text-white/60 hover:text-white/90'
               }`
             }
           >
