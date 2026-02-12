@@ -5,21 +5,22 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/HolidayForecast/',
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
-      manifest: {
+        manifest: {
         name: 'Holicast — Holiday Weather Forecast',
         short_name: 'Holicast',
         description: 'See the weather forecast for your travel destinations',
         theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: '/HolidayForecast/',
+        start_url: '/HolidayForecast/',
         icons: [
           {
             src: 'pwa-192x192.png',
