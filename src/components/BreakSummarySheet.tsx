@@ -37,9 +37,22 @@ export default function BreakSummarySheet({ open, onClose, location, dates, temp
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-slate-900 rounded-xl shadow-xl max-w-2xl w-full p-6 relative">
-        <button className="absolute top-3 right-3 text-slate-400 hover:text-white" onClick={onClose}>&times;</button>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        className="bg-slate-900 rounded-xl shadow-xl max-w-2xl w-full p-6 relative"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          className="absolute top-3 right-3 text-slate-400 hover:text-white"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          &times;
+        </button>
         <h2 className="text-xl font-bold text-white mb-2">Weather Summary for {location.name}</h2>
         <div className="text-slate-300 text-sm mb-4">{dates[0]} to {dates[dates.length-1]}</div>
         {loading ? (

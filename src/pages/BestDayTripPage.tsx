@@ -8,7 +8,7 @@ import { useQueries } from '@tanstack/react-query';
 import { getWeatherForecast } from '../api/openMeteo';
 import { scoreForecast, scoreColor } from '../utils/weatherScore';
 import { getWeatherInfo, countryFlag, formatDay, formatDate, getTempMappedBackground } from '../utils/weather';
-import { buildHolidaySearchUrl } from '../utils/holidaySearch';
+import { buildHolidaySearchUrl, buildExpediaPackageSearchUrl } from '../utils/holidaySearch';
 import BestDayTripFilter, { type BestDayTripFilterType } from '../components/BestDayTripFilter';
 import BreakSummarySheet from '../components/BreakSummarySheet';
 import type { SavedLocation, DailyForecast } from '../types';
@@ -170,26 +170,14 @@ export default function BestDayTripPage() {
             entry ? (
               <div
                 key={entry.date}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setSelectedDates([entry.date]);
-                    navigate('/', { state: { openDetail: { locId: entry.loc.id, date: entry.date } } });
-                  }
-                }}
-                onClick={() => {
-                  setSelectedDates([entry.date]);
-                  navigate('/', { state: { openDetail: { locId: entry.loc.id, date: entry.date } } });
-                }}
-                className={`flex items-center gap-3 rounded-xl border p-3 shadow-sm backdrop-blur-md ${
+                className={`flex items-center gap-3 rounded-xl border p-3 shadow-sm backdrop-blur-md cursor-pointer ${
                   top5.includes(entry.date)
                     ? 'border-white/40 shadow-lg'
                     : 'border-white/10'
                 }`}
                 style={{ backgroundColor: getTempMappedBackground((entry.forecast.tempMax + entry.forecast.tempMin) / 2, temperatureUnit) }}
-                >
+                onClick={() => setBreakSheet({ loc: entry.loc, dates: [entry.date] })}
+              >
                 <div className="absolute inset-0 rounded-xl bg-slate-900/40 pointer-events-none" />
                 <span className="relative z-10 w-16 text-xs text-slate-200 font-semibold drop-shadow-sm">
                   {formatDay(entry.date)}<br />
@@ -217,7 +205,7 @@ export default function BestDayTripPage() {
                   <span className="text-sm font-bold text-white mt-1 drop-shadow-sm">{entry.forecast.tempMax}°</span>
                   <button
                     className="mt-2 flex items-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs font-semibold text-white hover:bg-white/20 shadow-sm backdrop-blur-sm"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       const url = buildHolidaySearchUrl(
                         entry.loc.name,
@@ -305,21 +293,40 @@ export default function BestDayTripPage() {
                 <div className="flex flex-col items-end">
                   <span className={`rounded-full border border-white/20 bg-black/20 px-2 py-0.5 text-xs font-bold ${scoreColor(entry.score)} shadow-sm`}>{Math.round(entry.score)}</span>
                   <span className="text-xs text-slate-200 mt-1 drop-shadow-sm">Avg. Score</span>
-                  <button
-                    className="mt-2 flex items-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs font-semibold text-white hover:bg-white/20 shadow-sm backdrop-blur-sm"
-                    onClick={e => {
-                      e.stopPropagation();
-                      const url = buildHolidaySearchUrl(
-                        entry.loc.name,
-                        entry.dates,
-                        preferredAirport
-                      );
-                      window.open(url, '_blank', 'noopener,noreferrer');
-                    }}
-                  >
-                    <Plane className="h-4 w-4" />
-                    Search Flights
-                  </button>
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      className="flex items-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs font-semibold text-white hover:bg-white/20 shadow-sm backdrop-blur-sm"
+                      onClick={e => {
+                        e.stopPropagation();
+                        const url = buildHolidaySearchUrl(
+                          entry.loc.name,
+                          entry.dates,
+                          preferredAirport
+                        );
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }}
+                    >
+                      <Plane className="h-4 w-4" />
+                      Search Flights
+                    </button>
+                    <button
+                      className="flex items-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs font-semibold text-white hover:bg-white/20 shadow-sm backdrop-blur-sm"
+                      onClick={e => {
+                        e.stopPropagation();
+                        const url = buildExpediaPackageSearchUrl(
+                          entry.loc.name,
+                          entry.dates,
+                          preferredAirport,
+                          entry.loc.admin1,
+                          entry.loc.country
+                        );
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }}
+                    >
+                      <span className="h-4 w-4">🏨</span>
+                      Expedia
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : null
